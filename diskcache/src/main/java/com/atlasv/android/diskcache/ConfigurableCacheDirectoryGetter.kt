@@ -49,6 +49,10 @@ class ConfigurableCacheDirectoryGetter(
         return dir
     }
 
+    fun clean(): Boolean {
+        return currentDir?.deleteRecursively() == true
+    }
+
     fun getFile(fileName: String): File? {
         val dir = ensureDir() ?: return null
         return File(dir, fileName)
