@@ -3,6 +3,7 @@ package com.atlasv.android.diskcache
 import android.content.Context
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory
 import java.io.File
+import java.util.*
 
 /**
  * weiping@atlasv.com
@@ -51,6 +52,10 @@ class ConfigurableCacheDirectoryGetter(
 
     fun clean(): Boolean {
         return currentDir?.deleteRecursively() == true
+    }
+
+    fun createTempFile(): File? {
+        return getFile(UUID.randomUUID().toString().replace("-", ""))
     }
 
     fun getFile(fileName: String): File? {

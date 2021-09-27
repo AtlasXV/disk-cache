@@ -48,7 +48,7 @@ class DiskCacheProvider(private val factory: DiskCache.Factory) {
         }
 
         fun createTempFile(): File? {
-            return tempDirectoryGetter.getFile(UUID.randomUUID().toString().replace("-", ""))
+            return tempDirectoryGetter.createTempFile()
         }
 
     }
