@@ -1,4 +1,4 @@
-package com.atlasv.android.templatelib
+package com.atlasv.android.diskcacheapp
 
 import org.junit.Test
 

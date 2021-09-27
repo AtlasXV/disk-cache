@@ -1,4 +1,4 @@
-package com.atlasv.android.templatelib
+package com.atlasv.android.diskcache
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

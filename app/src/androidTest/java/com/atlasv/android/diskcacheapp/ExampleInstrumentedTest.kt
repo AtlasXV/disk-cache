@@ -1,4 +1,4 @@
-package com.atlasv.android.libtemplateapp
+package com.atlasv.android.diskcacheapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.atlasv.android.libtemplateapp", appContext.packageName)
+        assertEquals("com.atlasv.android.diskcacheapp", appContext.packageName)
     }
 }

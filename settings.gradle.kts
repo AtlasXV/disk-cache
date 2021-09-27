@@ -1,2 +1,2 @@
-rootProject.name = "Android-lib-template"
-include(":app", ":templatelib")
+rootProject.name = "Android-disk-cache"
+include(":app", ":diskcache")

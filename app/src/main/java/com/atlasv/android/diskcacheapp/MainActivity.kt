@@ -1,4 +1,4 @@
-package com.atlasv.android.libtemplateapp
+package com.atlasv.android.diskcacheapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

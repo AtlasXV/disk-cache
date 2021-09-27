@@ -7,7 +7,7 @@ android {
     compileSdk = 30
 
     defaultConfig {
-        applicationId = "com.atlasv.android.libtemplateapp"
+        applicationId = "com.atlasv.android.diskcacheapp"
         minSdk = 21
         targetSdk = 30
         versionCode = 1
