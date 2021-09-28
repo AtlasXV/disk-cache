@@ -43,7 +43,7 @@ class ConfigurableCacheDirectoryGetter(
         return getBaseInternalDir()?.let { setupDir(it) }
     }
 
-    private fun ensureDir(): File? {
+    fun ensureDir(): File? {
         val dir = currentDir ?: cacheDirectory?.also {
             currentDir = it
         }
