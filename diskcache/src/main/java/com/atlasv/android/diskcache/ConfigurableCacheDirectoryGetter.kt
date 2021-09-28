@@ -1,9 +1,10 @@
 package com.atlasv.android.diskcache
 
 import android.content.Context
+import com.atlasv.android.diskcache.DiskCacheProvider.Companion.randomFileName
+import com.atlasv.android.diskcache.DiskCacheProvider.Companion.sizeOfDir
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory
 import java.io.File
-import java.util.*
 
 /**
  * weiping@atlasv.com
@@ -51,15 +52,48 @@ class ConfigurableCacheDirectoryGetter(
     }
 
     fun clean(): Boolean {
-        return currentDir?.deleteRecursively() == true
+        return cacheDirectory?.deleteRecursively() == true
     }
 
-    fun createTempFile(): File? {
-        return getFile(UUID.randomUUID().toString().replace("-", ""))
+    fun deleteChild(childDirName: String): Boolean {
+        val childDir = cacheDirectory?.let { File(it, childDirName) } ?: return false
+        if (childDir.exists()) {
+            return childDir.deleteRecursively()
+        }
+        return false
     }
 
-    fun getFile(fileName: String): File? {
+    fun createTempFile(childDirName: String = "", prefix: String = "", suffix: String = ""): File? {
+        return getFile(childDirName, prefix + randomFileName() + suffix)
+    }
+
+    fun size(): Long {
+        return ensureDir()?.let { sizeOfDir(it) } ?: 0
+    }
+
+    fun cloneDir(targetBaseDirName: String): Boolean {
+        val originDir = ensureDir() ?: return false
+        val newDir = originDir.parentFile?.let { File(it, targetBaseDirName) } ?: return false
+        originDir.copyRecursively(newDir)
+        return sizeOfDir(originDir) == sizeOfDir(newDir)
+    }
+
+    fun getFile(childDirName: String = "", fileName: String): File? {
         val dir = ensureDir() ?: return null
+        if (childDirName.isNotEmpty()) {
+            return File(dir, childDirName).let { childDir ->
+                childDir.mkdirs()
+                File(childDir, fileName)
+            }
+        }
         return File(dir, fileName)
+    }
+
+    fun isNotEmpty(): Boolean {
+        return !isEmpty()
+    }
+
+    fun isEmpty(): Boolean {
+        return ensureDir()?.list().isNullOrEmpty()
     }
 }

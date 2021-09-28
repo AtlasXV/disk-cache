@@ -47,10 +47,23 @@ class DiskCacheProvider(private val factory: DiskCache.Factory) {
             )
         }
 
-        fun createTempFile(): File? {
-            return tempDirectoryGetter.createTempFile()
+        fun createTempFile(prefix: String = "", suffix: String = ""): File? {
+            return tempDirectoryGetter.createTempFile(prefix, suffix)
         }
 
+        fun randomFileName(): String {
+            return UUID.randomUUID().toString().replace("-", "")
+        }
+
+        fun sizeOfDir(dir: File): Long {
+            return dir.walkBottomUp().sumOf {
+                if (it.exists() && it.isFile) {
+                    it.length()
+                } else {
+                    0
+                }
+            }
+        }
     }
 }
 
