@@ -38,19 +38,6 @@ class DiskCacheProvider(private val factory: DiskCache.Factory) {
             application = app
         }
 
-        private val tempDirectoryGetter by lazy {
-            ConfigurableCacheDirectoryGetter(
-                context = application,
-                diskCacheName = "temp_disk_cache",
-                internalPreferred = true,
-                cachePreferred = true
-            )
-        }
-
-        fun createTempFile(prefix: String = "", suffix: String = ""): File? {
-            return tempDirectoryGetter.createTempFile(prefix, suffix)
-        }
-
         fun randomFileName(): String {
             return UUID.randomUUID().toString().replace("-", "")
         }
