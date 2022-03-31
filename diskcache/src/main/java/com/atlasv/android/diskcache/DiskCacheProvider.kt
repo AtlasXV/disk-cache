@@ -33,11 +33,6 @@ class DiskCacheProvider(private val factory: DiskCache.Factory) {
     }
 
     companion object {
-        private lateinit var application: Application
-        fun init(app: Application) {
-            application = app
-        }
-
         fun randomFileName(): String {
             return UUID.randomUUID().toString().replace("-", "")
         }
