@@ -78,7 +78,7 @@ class ConfigurableCacheDirectoryGetter(
         return sizeOfDir(originDir) == sizeOfDir(newDir)
     }
 
-    fun getFile(fileName: String, childDirName: String = ""): File? {
+    fun getFile(childDirName: String = "", fileName: String): File? {
         val dir = ensureDir() ?: return null
         if (childDirName.isNotEmpty()) {
             return File(dir, childDirName).let { childDir ->
