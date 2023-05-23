@@ -78,6 +78,25 @@ class ConfigurableCacheDirectoryGetter(
         return sizeOfDir(originDir) == sizeOfDir(newDir)
     }
 
+    fun fork(
+        targetBaseDirName: String,
+        internalPreferred: Boolean = this.internalPreferred,
+        cachePreferred: Boolean = this.cachePreferred,
+        copyContent: Boolean = false
+    ): ConfigurableCacheDirectoryGetter {
+        if (targetBaseDirName == this.diskCacheName) {
+            return this
+        }
+        val targetStorage =
+            ConfigurableCacheDirectoryGetter(context, targetBaseDirName, internalPreferred, cachePreferred)
+        if (copyContent) {
+            kotlin.runCatching {
+                ensureDir()?.copyRecursively(targetStorage.ensureDir()!!, overwrite = true)
+            }
+        }
+        return targetStorage
+    }
+
     fun getFile(childDirName: String = "", fileName: String): File? {
         val dir = ensureDir() ?: return null
         if (childDirName.isNotEmpty()) {
