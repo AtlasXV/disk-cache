@@ -12,7 +12,7 @@ import java.io.File
  */
 class ConfigurableCacheDirectoryGetter(
     private val context: Context,
-    private val diskCacheName: String?,
+    val diskCacheName: String?,
     private val internalPreferred: Boolean = false,
     private val cachePreferred: Boolean = false
 ) : DiskLruCacheFactory.CacheDirectoryGetter {
