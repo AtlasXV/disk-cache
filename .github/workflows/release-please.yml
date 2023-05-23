@@ -1,0 +1,69 @@
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/**'
+      - 'docs/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: release-please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    env:
+      GPR_USR: ${{ secrets.GPR_USR }}
+      GPR_KEY: ${{ secrets.GPR_KEY }}
+      ROOM_ID: "oc_44bf0d50f218c0e0074ed8644e620cef"
+
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          package-name: release-please-action
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+        if: ${{ steps.release.outputs.release_created }}
+
+      - run: echo ${{ steps.release.outputs.tag_name }} > lib_version.txt
+        if: ${{ steps.release.outputs.release_created }}
+
+      - run: ./gradlew publish
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Send pr notification
+        run: |
+          curl -XPOST \
+          -H "Content-Type:application/json" \
+          -H "X-SPACESHIP-TOKEN:${{ secrets.SPACESHIP_TOKEN }}" \
+          https://spaceship.etm.tech/hubot/notify \
+          -d '{"roomId":"${{ env.ROOM_ID }}","action":"${{ env.GITHUB_REPOSITORY }}","msg":"${{ github.repository }}有新 Pull request，[点击查看](https://github.com/${{ github.repository }}/pulls)"}'
+        if: ${{ steps.release.outputs.release_created == false}}
+
+      - name: Send release notification
+        run: |
+          curl -XPOST \
+          -H "Content-Type:application/json" \
+          -H "X-SPACESHIP-TOKEN:${{ secrets.SPACESHIP_TOKEN }}" \
+          https://spaceship.etm.tech/hubot/notify \
+          -d '{"roomId":"${{ env.ROOM_ID }}","action":"${{ env.GITHUB_REPOSITORY }}","msg":"${{ github.repository }}发布了新版本，[点击查看](https://github.com/${{ github.repository }}/releases)"}'
+        if: ${{ steps.release.outputs.release_created }}
