@@ -1,6 +1,5 @@
 package com.atlasv.android.diskcache
 
-import android.app.Application
 import androidx.annotation.VisibleForTesting
 import com.bumptech.glide.load.engine.cache.DiskCache
 import com.bumptech.glide.load.engine.cache.DiskCacheAdapter
