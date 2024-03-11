@@ -22,6 +22,14 @@ jobs:
       ROOM_ID: "oc_44bf0d50f218c0e0074ed8644e620cef"
 
     steps:
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle' # See 'Supported distributions' for available options
+          java-version: '17'
+      - name: Check Java version
+        run: java -version
+
       - uses: google-github-actions/release-please-action@v3
         id: release
         with:
