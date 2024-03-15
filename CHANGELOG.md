@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/AtlasXV/disk-cache/compare/v1.3.1...v1.4.0) (2024-03-15)
+
+
+### Features
+
+* Build with Kotlin 1.9.23 ([e9ed6ea](https://github.com/AtlasXV/disk-cache/commit/e9ed6ea0e5607b43da56106f5b12e6dcc4c9f173))
+
+
+### Bug Fixes
+
+* Build with Java 17 ([31f2792](https://github.com/AtlasXV/disk-cache/commit/31f2792e03b66574f6a78dee2f1de008755094f2))
+
 ## [1.3.1](https://github.com/AtlasXV/disk-cache/compare/v1.3.0...v1.3.1) (2024-03-11)
 
 
