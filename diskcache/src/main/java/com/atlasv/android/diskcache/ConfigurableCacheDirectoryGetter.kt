@@ -18,15 +18,19 @@ class ConfigurableCacheDirectoryGetter(
 ) : DiskLruCacheFactory.CacheDirectoryGetter {
 
     private var currentDir: File? = null
+    private var currentExternalDir: File? = null
 
     private fun getBaseInternalDir(): File? {
         return if (cachePreferred) context.cacheDir else context.filesDir
     }
 
     private fun getBaseExternalDir(): File? {
-        return if (cachePreferred) context.externalCacheDir else context.getExternalFilesDir(
-            null
-        )?.takeIf { it.canWrite() }
+        return currentExternalDir
+            ?: (if (cachePreferred) context.externalCacheDir else context.getExternalFilesDir(
+                null
+            )?.takeIf { it.canWrite() }).also {
+                currentExternalDir = it
+            }
     }
 
     private fun setupDir(dir: File): File {
@@ -87,8 +91,9 @@ class ConfigurableCacheDirectoryGetter(
         if (targetBaseDirName == this.diskCacheName) {
             return this
         }
-        val targetStorage =
-            ConfigurableCacheDirectoryGetter(context, targetBaseDirName, internalPreferred, cachePreferred)
+        val targetStorage = ConfigurableCacheDirectoryGetter(
+            context, targetBaseDirName, internalPreferred, cachePreferred
+        )
         if (copyContent) {
             kotlin.runCatching {
                 ensureDir()?.copyRecursively(targetStorage.ensureDir()!!, overwrite = true)
