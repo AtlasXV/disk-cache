@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/AtlasXV/disk-cache/compare/v1.4.0...v1.5.0) (2024-12-09)
+
+
+### Features
+
+* 缓存ExternalDir ([40130c1](https://github.com/AtlasXV/disk-cache/commit/40130c1a3a7170efd0a47d3b02440da1a84163f1))
+* 缓存ExternalDir ([e6034af](https://github.com/AtlasXV/disk-cache/commit/e6034afe417348d7d17b51bbe54d5be2c76efe6e))
+
 ## [1.4.0](https://github.com/AtlasXV/disk-cache/compare/v1.3.1...v1.4.0) (2024-03-15)
 
 
