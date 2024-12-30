@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/AtlasXV/disk-cache/compare/v1.5.0...v1.5.1) (2024-12-30)
+
+
+### Bug Fixes
+
+* 1.缓存所有的可能被访问的目录 ([9284c7d](https://github.com/AtlasXV/disk-cache/commit/9284c7d3c955afb44b9256504816b7b49f1ab139))
+
 ## [1.5.0](https://github.com/AtlasXV/disk-cache/compare/v1.4.0...v1.5.0) (2024-12-09)
 
 
