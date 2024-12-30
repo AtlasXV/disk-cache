@@ -18,19 +18,17 @@ class ConfigurableCacheDirectoryGetter(
 ) : DiskLruCacheFactory.CacheDirectoryGetter {
 
     private var currentDir: File? = null
-    private var currentExternalDir: File? = null
+    private val cacheDir by lazy { context.cacheDir }
+    private val filesDir by lazy { context.filesDir }
+    private val externalCacheDir by lazy { context.externalCacheDir }
+    private val externalFilesDir by lazy { context.getExternalFilesDir(null) }
 
     private fun getBaseInternalDir(): File? {
-        return if (cachePreferred) context.cacheDir else context.filesDir
+        return if (cachePreferred) cacheDir else filesDir
     }
 
     private fun getBaseExternalDir(): File? {
-        return currentExternalDir
-            ?: (if (cachePreferred) context.externalCacheDir else context.getExternalFilesDir(
-                null
-            )?.takeIf { it.canWrite() }).also {
-                currentExternalDir = it
-            }
+        return (if (cachePreferred) externalCacheDir else externalFilesDir?.takeIf { it.canWrite() })
     }
 
     private fun setupDir(dir: File): File {
@@ -51,7 +49,10 @@ class ConfigurableCacheDirectoryGetter(
         val dir = currentDir ?: cacheDirectory?.also {
             currentDir = it
         }
-        dir?.mkdirs()
+        // 仅在目录不存在时才创建
+        if (dir?.exists() != true) {
+            dir?.mkdirs() // 只在目录不存在时创建
+        }
         return dir
     }
 
