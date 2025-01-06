@@ -4,6 +4,8 @@ import android.content.Context
 import com.atlasv.android.diskcache.DiskCacheProvider.Companion.randomFileName
 import com.atlasv.android.diskcache.DiskCacheProvider.Companion.sizeOfDir
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -18,10 +20,44 @@ class ConfigurableCacheDirectoryGetter(
 ) : DiskLruCacheFactory.CacheDirectoryGetter {
 
     private var currentDir: File? = null
-    private val cacheDir by lazy { context.cacheDir }
-    private val filesDir by lazy { context.filesDir }
-    private val externalCacheDir by lazy { context.externalCacheDir }
-    private val externalFilesDir by lazy { context.getExternalFilesDir(null) }
+
+
+    companion object {
+        // 全局共享的目录变量
+        private var initialized = false
+        private lateinit var appContext: Context
+        private var cachedCacheDir: File? = null
+        private var cachedFilesDir: File? = null
+        private var cachedExternalCacheDir: File? = null
+        private var cachedExternalFilesDir: File? = null
+
+        // 初始化共享变量并预加载目录
+        suspend fun initialize(context: Context) {
+            if (!initialized) {
+                appContext = context.applicationContext
+                preloadDirectories()
+                initialized = true
+            }
+        }
+
+        // 预加载目录
+        private suspend fun preloadDirectories() {
+            cachedCacheDir = runCatching { appContext.cacheDir }.getOrNull()
+            cachedFilesDir = runCatching { appContext.filesDir }.getOrNull()
+            cachedExternalCacheDir = runCatching { appContext.externalCacheDir }.getOrNull()
+            cachedExternalFilesDir = runCatching { appContext.getExternalFilesDir(null) }.getOrNull()
+        }
+
+        // 获取缓存的目录
+        val cacheDir: File?
+            get() = cachedCacheDir ?: runCatching { appContext.cacheDir }.getOrNull()
+        val filesDir: File?
+            get() = cachedFilesDir ?: runCatching { appContext.filesDir }.getOrNull()
+        val externalCacheDir: File?
+            get() = cachedExternalCacheDir ?: runCatching { appContext.externalCacheDir }.getOrNull()
+        val externalFilesDir: File?
+            get() = cachedExternalFilesDir ?: runCatching { appContext.getExternalFilesDir(null) }.getOrNull()
+    }
 
     private fun getBaseInternalDir(): File? {
         return if (cachePreferred) cacheDir else filesDir
