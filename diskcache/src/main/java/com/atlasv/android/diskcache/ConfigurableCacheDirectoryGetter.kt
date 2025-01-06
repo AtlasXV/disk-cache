@@ -40,7 +40,7 @@ class ConfigurableCacheDirectoryGetter(
             }
         }
 
-        // 预加载目录
+        // 预加载目录，异步预加载
         private suspend fun preloadDirectories() {
             cachedCacheDir = runCatching { appContext.cacheDir }.getOrNull()
             cachedFilesDir = runCatching { appContext.filesDir }.getOrNull()
