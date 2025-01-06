@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/AtlasXV/disk-cache/compare/v1.5.1...v1.5.2) (2025-01-06)
+
+
+### Bug Fixes
+
+* 处理预加载 ([dacdd91](https://github.com/AtlasXV/disk-cache/commit/dacdd9111a305920adb871eb8f9d859fb13083d2))
+
 ## [1.5.1](https://github.com/AtlasXV/disk-cache/compare/v1.5.0...v1.5.1) (2024-12-30)
 
 
